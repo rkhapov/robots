@@ -10,9 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.swing.JPanel;
-import log.Logger;
 
 public class GameVisualizer extends JPanel
 {
@@ -67,8 +65,6 @@ public class GameVisualizer extends JPanel
     {
         targetPositionX = p.x;
         targetPositionY = p.y;
-
-        Logger.debug(String.format("Coordinates changed to %d %d", targetPositionX, targetPositionY));
     }
     
     protected void onRedrawEvent()

@@ -1,29 +1,37 @@
 package log;
 
-public final class Logger
-{
-    private static final LogQueue defaultLogSource;
+public final class Logger implements ILogger {
 
-    static {
-        defaultLogSource = new LogQueue(100);
-    }
-    
-    private Logger()
-    {
-    }
+  private final ILogChangeNotifier notifier;
+  private final LogQueue queue;
 
-    public static void debug(String strMessage)
-    {
-        defaultLogSource.append(LogLevel.Debug, strMessage);
-    }
-    
-    public static void error(String strMessage)
-    {
-        defaultLogSource.append(LogLevel.Error, strMessage);
-    }
+  public Logger(ILogChangeNotifier notifier, int queueLength) {
+    this.notifier = notifier;
+    queue = new LogQueue(queueLength);
+  }
 
-    public static LogQueue getDefaultLogSource()
-    {
-        return defaultLogSource;
-    }
+  public Logger(ILogChangeNotifier notifier, LogQueue queue) {
+    this.notifier = notifier;
+    this.queue = queue;
+  }
+
+  @Override
+  public void debug(String message) {
+    queue.append(LogLevel.Debug, message);
+    notifier.notifyListeners();
+  }
+
+  @Override
+  public void error(String message) {
+    queue.append(LogLevel.Debug, message);
+    notifier.notifyListeners();
+  }
+
+  public ILogChangeNotifier notifier() {
+    return notifier;
+  }
+
+  public LogQueue queue() {
+    return queue;
+  }
 }
