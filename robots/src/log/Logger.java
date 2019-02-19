@@ -2,9 +2,10 @@ package log;
 
 public final class Logger
 {
-    private static final LogWindowSource defaultLogSource;
+    private static final LogQueue defaultLogSource;
+
     static {
-        defaultLogSource = new LogWindowSource(100);
+        defaultLogSource = new LogQueue(100);
     }
     
     private Logger()
@@ -21,7 +22,7 @@ public final class Logger
         defaultLogSource.append(LogLevel.Error, strMessage);
     }
 
-    public static LogWindowSource getDefaultLogSource()
+    public static LogQueue getDefaultLogSource()
     {
         return defaultLogSource;
     }
