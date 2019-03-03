@@ -4,6 +4,7 @@ import java.awt.Frame;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import log.Logger;
 
 public class RobotsProgram
 {
@@ -17,7 +18,7 @@ public class RobotsProgram
         e.printStackTrace();
       }
       SwingUtilities.invokeLater(() -> {
-        MainApplicationFrame frame = new MainApplicationFrame();
+        MainApplicationFrame frame = new MainApplicationFrame(new Logger(100));
         frame.pack();
         frame.setVisible(true);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);

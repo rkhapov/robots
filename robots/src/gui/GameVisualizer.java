@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 public class GameVisualizer extends JPanel
 {
-    private final Timer m_timer = initTimer();
+    private final Timer timer = initTimer();
     
     private static Timer initTimer() 
     {
@@ -33,7 +33,7 @@ public class GameVisualizer extends JPanel
     
     public GameVisualizer() 
     {
-        m_timer.schedule(new TimerTask()
+        timer.schedule(new TimerTask()
         {
             @Override
             public void run()
@@ -41,7 +41,7 @@ public class GameVisualizer extends JPanel
                 onRedrawEvent();
             }
         }, 0, 50);
-        m_timer.schedule(new TimerTask()
+        timer.schedule(new TimerTask()
         {
             @Override
             public void run()

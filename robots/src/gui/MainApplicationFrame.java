@@ -24,11 +24,13 @@ import log.Logger;
  */
 public class MainApplicationFrame extends JFrame
 {
+    private final Logger logger;
     private final JDesktopPane desktopPane = new JDesktopPane();
     
-    public MainApplicationFrame() {
+    public MainApplicationFrame(Logger logger) {
         //Make the big window be indented 50 pixels from each edge
         //of the screen.
+        this.logger = logger;
         int inset = 50;        
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(inset, inset,
@@ -51,12 +53,12 @@ public class MainApplicationFrame extends JFrame
     
     protected LogWindow createLogWindow()
     {
-        LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
+        LogWindow logWindow = new LogWindow(logger);
         logWindow.setLocation(10,10);
         logWindow.setSize(300, 800);
         setMinimumSize(logWindow.getSize());
         logWindow.pack();
-        Logger.debug("Протокол работает");
+        logger.debug("Протокол работает");
         return logWindow;
     }
     
@@ -130,7 +132,7 @@ public class MainApplicationFrame extends JFrame
         {
             JMenuItem addLogMessageItem = new JMenuItem("Сообщение в лог", KeyEvent.VK_S);
             addLogMessageItem.addActionListener((event) -> {
-                Logger.debug("Новая строка");
+                logger.debug("Новая строка");
             });
             testMenu.add(addLogMessageItem);
         }

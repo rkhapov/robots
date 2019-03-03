@@ -1,19 +1,17 @@
 package log;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
 
-/**
- * Что починить: 1. Этот класс порождает утечку ресурсов (связанные слушатели оказываются
- * удерживаемыми в памяти)
- */
 
 public class LogChangeNotifier implements ILogChangeNotifier {
 
-  private final ArrayList<LogChangeListener> listeners;
+  private final Set<LogChangeListener> listeners;
   private volatile LogChangeListener[] activeListeners;
 
   public LogChangeNotifier() {
-    listeners = new ArrayList<>();
+    listeners = Collections.newSetFromMap(new WeakHashMap<>());
   }
 
   @Override
@@ -42,15 +40,14 @@ public class LogChangeNotifier implements ILogChangeNotifier {
   }
 
   private LogChangeListener[] getCurrentActiveListeners() {
-    LogChangeListener[] activeListeners = this.activeListeners;
+    var activeListeners = this.activeListeners;
 
-    synchronized (listeners) {
-      if (this.activeListeners == null) {
-        activeListeners = listeners.toArray(new LogChangeListener[0]);
-        this.activeListeners = activeListeners;
-      }
+    if (activeListeners != null) {
+      return activeListeners;
     }
 
-    return activeListeners;
+    synchronized (listeners) {
+      return this.activeListeners = listeners.toArray(new LogChangeListener[0]);
+    }
   }
 }

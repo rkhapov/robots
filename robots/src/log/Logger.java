@@ -5,6 +5,11 @@ public final class Logger implements ILogger {
   private final ILogChangeNotifier notifier;
   private final LogQueue queue;
 
+  public Logger(int queueLength) {
+    this.notifier = new LogChangeNotifier();
+    queue = new LogQueue(queueLength);
+  }
+
   public Logger(ILogChangeNotifier notifier, int queueLength) {
     this.notifier = notifier;
     queue = new LogQueue(queueLength);

@@ -3,24 +3,22 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.TextArea;
-
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
-
 import log.LogChangeListener;
 import log.LogEntry;
-import log.LogQueue;
+import log.Logger;
 
 public class LogWindow extends JInternalFrame implements LogChangeListener
 {
-    private LogQueue logSource;
+    private Logger logSource;
     private TextArea logContent;
 
-    public LogWindow(LogQueue logSource)
+    public LogWindow(Logger logSource)
     {
         super("Протокол работы", true, true, true, true);
         this.logSource = logSource;
-        this.logSource.registerListener(this);
+        this.logSource.notifier().registerListener(this);
         logContent = new TextArea("");
         logContent.setSize(200, 500);
         
@@ -34,7 +32,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
     private void updateLogContent()
     {
         StringBuilder content = new StringBuilder();
-        for (LogEntry entry : logSource.all())
+        for (LogEntry entry : logSource.queue().all())
         {
             content.append(entry.getMessage()).append("\n");
         }
