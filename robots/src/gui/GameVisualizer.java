@@ -54,6 +54,9 @@ public class GameVisualizer extends JPanel {
   private void setTargetPosition(Point p) {
     targetPositionX = p.x;
     targetPositionY = p.y;
+
+    robotRunner.setTargetX(targetPositionX);
+    robotRunner.setTargetY(targetPositionY);
   }
 
   private void onRedrawEvent() {

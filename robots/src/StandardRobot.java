@@ -107,7 +107,7 @@ public class StandardRobot implements Robot {
     return asNormalizedRadians(Math.atan2(diffY, diffX));
   }
 
-  public static double asNormalizedRadians(double angle)
+  private static double asNormalizedRadians(double angle)
   {
     while (angle < 0)
     {
