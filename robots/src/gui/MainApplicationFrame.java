@@ -168,7 +168,10 @@ public class MainApplicationFrame extends JFrame {
 
     var programMenu = createJMenu("Программа", KeyEvent.VK_B, "Управление программой");
     var addRobotLogic = createJMenuItem("Загрузить логику", KeyEvent.VK_L, (event) -> chooseFile());
+    var start = createJMenuItem("Старт", KeyEvent.VK_P, (event) -> startRobot());
+
     programMenu.add(addRobotLogic);
+    programMenu.add(start);
 
     menuBar.add(programMenu);
     menuBar.add(testMenu);
@@ -177,12 +180,16 @@ public class MainApplicationFrame extends JFrame {
     return menuBar;
   }
 
-  private void chooseFile(){
+  private void startRobot() {
+    gameWindow.startRobot();
+  }
+
+  private void chooseFile() {
     var chooser = new JFileChooser();
     var filter = new FileNameExtensionFilter("Java compiled class (.class)", "class");
     chooser.setFileFilter(filter);
-    var result = chooser.showDialog(null, "Загрузить логику бота");
-    if (result == JFileChooser.APPROVE_OPTION){
+    var result = chooser.showDialog(this, "Загрузить логику бота");
+    if (result == JFileChooser.APPROVE_OPTION) {
       var file = chooser.getSelectedFile();
       var path = file.getPath();
 
@@ -190,14 +197,13 @@ public class MainApplicationFrame extends JFrame {
     }
   }
 
-  private void logicLoader(String filePath){
+  private void logicLoader(String filePath) {
     try {
       var robotClass = robotClassLoader.loadClass(filePath);
       var robotInstance = robotFactory.createRobot(robotClass, 50, 50, 0);
 
-      gameWindow.setRobot(new RobotRunner(robotInstance));
-    }
-    catch(ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException | NoClassDefFoundError e) {
+      gameWindow.setRobot(new RobotRunner(robotInstance, 10));
+    } catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException | NoClassDefFoundError e) {
       JOptionPane.showMessageDialog(
           this,
           String.format("Не удалось загрузить программу робота: %s", e.toString()),

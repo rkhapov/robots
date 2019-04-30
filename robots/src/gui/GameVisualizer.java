@@ -44,11 +44,23 @@ public class GameVisualizer extends JPanel {
     });
     setDoubleBuffered(true);
 
-    setRobotRunner(new RobotRunner(new LazyRobot(50, 50, 0)));
+    setRobotRunner(new RobotRunner(new LazyRobot(50, 50, 0), 10));
   }
 
   public void setRobotRunner(RobotRunner robotRunner) {
+
+    if (robotRunner.isAlive()) {
+      this.robotRunner.stopRunning();
+    }
+
     this.robotRunner = robotRunner;
+  }
+
+  public void startRobot() {
+    if (robotRunner.isAlive())
+      return;
+
+    this.robotRunner.start();
   }
 
   private void setTargetPosition(Point p) {

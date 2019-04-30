@@ -5,8 +5,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RobotClassLoader extends ClassLoader {
+
+  private final Map<String, Class<?>> cache;
+
+  public RobotClassLoader() {
+    cache = new HashMap<>();
+  }
 
   @Override
   protected Class<?> findClass(String name) throws ClassNotFoundException {
@@ -22,13 +30,19 @@ public class RobotClassLoader extends ClassLoader {
   }
 
   private Class<?> loadMyClass(String name) throws IOException {
+    if (cache.containsKey(name))
+      return cache.get(name);
+
     var file = new File(name);
 
     try (var fin = new FileInputStream(file)) {
       var bytes = readFile(fin);
       var className = file.getName().replaceFirst("[.][^.]+$", "");
+      var class_ = super.defineClass(className, bytes,0, bytes.length);
 
-      return super.defineClass(className, bytes,0, bytes.length);
+      cache.put(name, class_);
+
+      return class_;
     }
   }
 
