@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.*;
 
@@ -188,6 +189,7 @@ public class MainApplicationFrame extends JFrame {
     var chooser = new JFileChooser();
     var filter = new FileNameExtensionFilter("Java compiled class (.class)", "class");
     chooser.setFileFilter(filter);
+    chooser.setCurrentDirectory(new File("."));
     var result = chooser.showDialog(this, "Загрузить логику бота");
     if (result == JFileChooser.APPROVE_OPTION) {
       var file = chooser.getSelectedFile();
