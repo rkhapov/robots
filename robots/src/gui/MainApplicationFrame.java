@@ -141,29 +141,6 @@ public class MainApplicationFrame extends JFrame {
   private JMenuBar generateMenuBar() {
     JMenuBar menuBar = new JMenuBar();
 
-    JMenu lookAndFeelMenu = new JMenu("Режим отображения");
-    lookAndFeelMenu.setMnemonic(KeyEvent.VK_V);
-    lookAndFeelMenu.getAccessibleContext().setAccessibleDescription(
-        "Управление режимом отображения приложения");
-
-    {
-      JMenuItem systemLookAndFeel = new JMenuItem("Системная схема", KeyEvent.VK_S);
-      systemLookAndFeel.addActionListener((event) -> {
-        setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        this.invalidate();
-      });
-      lookAndFeelMenu.add(systemLookAndFeel);
-    }
-
-    {
-      JMenuItem crossplatformLookAndFeel = new JMenuItem("Универсальная схема", KeyEvent.VK_S);
-      crossplatformLookAndFeel.addActionListener((event) -> {
-        setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-        this.invalidate();
-      });
-      lookAndFeelMenu.add(crossplatformLookAndFeel);
-    }
-
     JMenu testMenu = new JMenu("Тесты");
     testMenu.setMnemonic(KeyEvent.VK_T);
     testMenu.getAccessibleContext().setAccessibleDescription(
@@ -194,7 +171,6 @@ public class MainApplicationFrame extends JFrame {
     programMenu.add(addRobotLogic);
 
     menuBar.add(programMenu);
-    menuBar.add(lookAndFeelMenu);
     menuBar.add(testMenu);
     menuBar.add(exitMenu);
 
@@ -221,7 +197,7 @@ public class MainApplicationFrame extends JFrame {
 
       gameWindow.setRobot(new RobotRunner(robotInstance));
     }
-    catch(ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+    catch(ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException | NoClassDefFoundError e) {
       JOptionPane.showMessageDialog(
           this,
           String.format("Не удалось загрузить программу робота: %s", e.toString()),
