@@ -42,88 +42,76 @@ public class StandardRobot implements Robot {
     update(duration, targetX, targetY, distance);
   }
 
+  private static double distance(double x1, double y1, double x2, double y2)
+  {
+    double diffX = x1 - x2;
+    double diffY = y1 - y2;
+    return Math.sqrt(diffX * diffX + diffY * diffY);
+  }
+
   private void update(double duration, int targetX, int targetY, double distance) {
     velocity = maxVelocity;
-
     var angularVelocity = getAngularVelocity(targetX, targetY, distance);
-    var newX = y + maxVelocity / angularVelocity *
-        (Math.sin(direction  + angularVelocity * duration) -
+    double newX = x + maxVelocity / angularVelocity *
+        (Math.sin(direction + angularVelocity * duration) -
             Math.sin(direction));
-
-    if (!Double.isFinite(newX))
-    {
-      newX = y + velocity * duration * Math.cos(direction);
+    if (!Double.isFinite(newX)) {
+      newX = x + velocity * duration * Math.cos(direction);
     }
-    var newY = y - velocity / angularVelocity *
-        (Math.cos(direction  + angularVelocity * duration) -
+    double newY = y - velocity / angularVelocity *
+        (Math.cos(direction + angularVelocity * duration) -
             Math.cos(direction));
-
-    if (!Double.isFinite(newY))
-    {
+    if (!Double.isFinite(newY)) {
       newY = y + velocity * duration * Math.sin(direction);
     }
-
     x = newX;
     y = newY;
-
     direction = asNormalizedRadians(direction + angularVelocity * duration);
   }
 
-  private double getAngularVelocity(int targetX, int targetY, double distance){
+  private double getAngularVelocity(int targetX, int targetY, double distance) {
 
-    var angleToTarget = angleTo(x, y, targetX, targetY);
-    var angularVelocity = 0.0;
+    double angleToTarget = angleTo(x, y, targetX, targetY);
+    double angularVelocity = 0;
     var angleFromTargetToRobot = asNormalizedRadians(angleToTarget - direction);
 
-    if (angleFromTargetToRobot > Math.PI)
-    {
+    if (angleFromTargetToRobot > Math.PI) {
       angularVelocity = -maxAngularVelocity;
-    }
-    else if (angleFromTargetToRobot < Math.PI)
-    {
+    } else if (angleFromTargetToRobot < Math.PI) {
       angularVelocity = maxAngularVelocity;
     }
-    if (Math.abs(angleFromTargetToRobot) <= 0.1)
+    if (Math.abs(angleFromTargetToRobot) <= 0.1) {
       velocity = maxVelocity;
-    else
-      velocity = angularVelocity * distance/2;
+    } else {
+      velocity = angularVelocity * distance / 2;
+    }
     return applyLimits(angularVelocity, -maxAngularVelocity, maxAngularVelocity);
   }
 
-  private static double applyLimits(double value, double min, double max)
-  {
-    if (value < min)
+  private static double applyLimits(double value, double min, double max) {
+    if (value < min) {
       return min;
-    if (value > max)
+    }
+    if (value > max) {
       return max;
+    }
     return value;
   }
 
-  private static double angleTo(double fromX, double fromY, double toX, double toY)
-  {
+  private static double angleTo(double fromX, double fromY, double toX, double toY) {
     double diffX = toX - fromX;
     double diffY = toY - fromY;
 
     return asNormalizedRadians(Math.atan2(diffY, diffX));
   }
 
-  private static double asNormalizedRadians(double angle)
-  {
-    while (angle < 0)
-    {
-      angle += 2*Math.PI;
+  private static double asNormalizedRadians(double angle) {
+    while (angle < 0) {
+      angle += 2 * Math.PI;
     }
-    while (angle >= 2*Math.PI)
-    {
-      angle -= 2*Math.PI;
+    while (angle >= 2 * Math.PI) {
+      angle -= 2 * Math.PI;
     }
     return angle;
-  }
-
-  private static double distance(double x1, double y1, double x2, double y2)
-  {
-    double diffX = x1 - x2;
-    double diffY = y1 - y2;
-    return Math.sqrt(diffX * diffX + diffY * diffY);
   }
 }
