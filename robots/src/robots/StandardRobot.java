@@ -1,4 +1,4 @@
-import robots.Robot;
+package robots;
 
 public class StandardRobot implements Robot {
 
