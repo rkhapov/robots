@@ -10,6 +10,7 @@ public class RobotRunner extends Thread {
   private int targetY;
 
   private boolean stopped = false;
+  private boolean paused = false;
 
   public RobotRunner(Robot robot, long dt) {
     this.dt = dt;
@@ -20,6 +21,13 @@ public class RobotRunner extends Thread {
     stopped = true;
   }
 
+  public void pauseRunning() {
+    paused = true;
+  }
+
+  public boolean isPaused() {
+    return paused;
+  }
 
   public void setTargetX(int x) {
     targetX = x;
@@ -39,10 +47,19 @@ public class RobotRunner extends Thread {
       try {
         Thread.sleep(dt);
 
-        robot.move(dt, targetX, targetY);
+        if (!paused) {
+          robot.move(dt, targetX, targetY);
+        }
       } catch (InterruptedException e) {
         //do literally nothing
       }
     }
+  }
+
+  @Override
+  public void start() {
+    if (paused)
+      paused = false;
+    super.start();
   }
 }

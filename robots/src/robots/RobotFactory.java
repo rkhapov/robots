@@ -74,7 +74,7 @@ public class RobotFactory {
 
     private final Object realRobotInstance;
 
-    public RobotWrapper(Object realRobotInstance) {
+    private RobotWrapper(Object realRobotInstance) {
       this.realRobotInstance = realRobotInstance;
     }
 

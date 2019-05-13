@@ -9,6 +9,7 @@ import java.awt.event.WindowListener;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Random;
 import javax.swing.*;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -28,6 +29,7 @@ public class MainApplicationFrame extends JFrame {
   private final JDesktopPane desktopPane = new JDesktopPane();
   private final RobotClassLoader robotClassLoader;
   private final RobotFactory robotFactory;
+  private final Random random = new Random();
 
 
   public MainApplicationFrame(Logger logger) {
@@ -195,14 +197,16 @@ public class MainApplicationFrame extends JFrame {
       var file = chooser.getSelectedFile();
       var path = file.getPath();
 
-      logicLoader(path);
+      loadLogicFromFile(path);
     }
   }
 
-  private void logicLoader(String filePath) {
+  private void loadLogicFromFile(String filePath) {
     try {
       var robotClass = robotClassLoader.loadClass(filePath);
-      var robotInstance = robotFactory.createRobot(robotClass, 50, 50, 0);
+      var x = random.nextInt(gameWindow.getWidth());
+      var y = random.nextInt(gameWindow.getHeight());
+      var robotInstance = robotFactory.createRobot(robotClass, x, y, 0);
 
       gameWindow.setRobot(new RobotRunner(robotInstance, 10));
     } catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException | NoClassDefFoundError e) {

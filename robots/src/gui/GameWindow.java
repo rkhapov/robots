@@ -21,10 +21,10 @@ public class GameWindow extends JInternalFrame
     }
 
     public void setRobot(RobotRunner robotRunner) {
-        visualizer.setRobotRunner(robotRunner);
+        visualizer.addRunner(robotRunner);
     }
 
     public void startRobot() {
-        visualizer.startRobot();
+        visualizer.startRunners();
     }
 }

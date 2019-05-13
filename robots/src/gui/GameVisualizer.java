@@ -8,10 +8,11 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JPanel;
-import robots.LazyRobot;
 import robots.RobotRunner;
 
 public class GameVisualizer extends JPanel {
@@ -25,7 +26,7 @@ public class GameVisualizer extends JPanel {
   private volatile int targetPositionX = 150;
   private volatile int targetPositionY = 100;
 
-  private RobotRunner robotRunner;
+  private final Map<RobotRunner, Color> runnerToColor;
 
   public GameVisualizer() {
     timer.schedule(new TimerTask() {
@@ -44,31 +45,36 @@ public class GameVisualizer extends JPanel {
     });
     setDoubleBuffered(true);
 
-    setRobotRunner(new RobotRunner(new LazyRobot(50, 50, 0), 10));
+    runnerToColor = new HashMap<>();
   }
 
-  public void setRobotRunner(RobotRunner robotRunner) {
+  public void addRunner(RobotRunner robotRunner) {
 
-    if (robotRunner.isAlive()) {
-      this.robotRunner.stopRunning();
+    for (var runner : runnerToColor.keySet()) {
+      runner.pauseRunning();
     }
 
-    this.robotRunner = robotRunner;
+    runnerToColor.put(robotRunner, new Color((int)(Math.random() * 0x1000000)));
   }
 
-  public void startRobot() {
-    if (robotRunner.isAlive())
-      return;
+  public void startRunners() {
+    for (var robotRunner : runnerToColor.keySet()) {
+      if (robotRunner.isAlive() && !robotRunner.isPaused()) {
+        return;
+      }
 
-    this.robotRunner.start();
+      robotRunner.start();
+    }
   }
 
   private void setTargetPosition(Point p) {
     targetPositionX = p.x;
     targetPositionY = p.y;
 
-    robotRunner.setTargetX(targetPositionX);
-    robotRunner.setTargetY(targetPositionY);
+    for (var runner : runnerToColor.keySet()) {
+      runner.setTargetX(targetPositionX);
+      runner.setTargetY(targetPositionY);
+    }
   }
 
   private void onRedrawEvent() {
@@ -82,11 +88,16 @@ public class GameVisualizer extends JPanel {
   @Override
   public void paint(Graphics g) {
     super.paint(g);
-    Graphics2D g2d = (Graphics2D) g;
-    drawRobot(g2d,
-        round(robotRunner.getRobot().getPositionX()),
-        round(robotRunner.getRobot().getPositionY()),
-        robotRunner.getRobot().getDirection());
+    var g2d = (Graphics2D) g;
+
+    for (var robotRunner : runnerToColor.keySet()) {
+      drawRobot(g2d,
+          round(robotRunner.getRobot().getPositionX()),
+          round(robotRunner.getRobot().getPositionY()),
+          robotRunner.getRobot().getDirection(),
+          runnerToColor.get(robotRunner));
+    }
+
     drawTarget(g2d, targetPositionX, targetPositionY);
   }
 
@@ -98,10 +109,10 @@ public class GameVisualizer extends JPanel {
     g.drawOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
   }
 
-  private void drawRobot(Graphics2D g, int centerX, int centerY, double direction) {
+  private void drawRobot(Graphics2D g, int centerX, int centerY, double direction, Color robotColor) {
     AffineTransform t = AffineTransform.getRotateInstance(direction, centerX, centerY);
     g.setTransform(t);
-    g.setColor(Color.MAGENTA);
+    g.setColor(robotColor);
     fillOval(g, centerX, centerY, 30, 10);
     g.setColor(Color.BLACK);
     drawOval(g, centerX, centerY, 30, 10);
