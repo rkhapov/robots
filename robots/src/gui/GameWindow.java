@@ -20,7 +20,7 @@ public class GameWindow extends JInternalFrame
         pack();
     }
 
-    public void setRobot(RobotRunner robotRunner) {
+    public void addRobot(RobotRunner robotRunner) {
         visualizer.addRunner(robotRunner);
     }
 

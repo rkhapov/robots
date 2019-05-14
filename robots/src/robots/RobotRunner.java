@@ -2,6 +2,8 @@ package robots;
 
 public class RobotRunner extends Thread {
 
+  private final String id;
+
   private final Robot robot;
 
   private final long dt;
@@ -15,6 +17,7 @@ public class RobotRunner extends Thread {
   public RobotRunner(Robot robot, long dt) {
     this.dt = dt;
     this.robot = robot;
+    id = java.util.UUID.randomUUID().toString();
   }
 
   public void stopRunning() {
@@ -54,12 +57,17 @@ public class RobotRunner extends Thread {
         //do literally nothing
       }
     }
+    System.out.println(String.format("Shutting down %s", id));
   }
 
   @Override
   public void start() {
+    System.out.println(String.format("%s %s", isAlive() ? "Resumed" : "Start", id));
+    
     if (paused)
       paused = false;
-    super.start();
+
+    if (!isAlive())
+      super.start();
   }
 }

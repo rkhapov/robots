@@ -208,7 +208,7 @@ public class MainApplicationFrame extends JFrame {
       var y = random.nextInt(gameWindow.getHeight());
       var robotInstance = robotFactory.createRobot(robotClass, x, y, 0);
 
-      gameWindow.setRobot(new RobotRunner(robotInstance, 10));
+      gameWindow.addRobot(new RobotRunner(robotInstance, 10));
     } catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException | NoClassDefFoundError e) {
       JOptionPane.showMessageDialog(
           this,
