@@ -204,8 +204,8 @@ public class MainApplicationFrame extends JFrame {
   private void loadLogicFromFile(String filePath) {
     try {
       var robotClass = robotClassLoader.loadClass(filePath);
-      var x = random.nextInt(gameWindow.getWidth());
-      var y = random.nextInt(gameWindow.getHeight());
+      var x = random.nextInt(gameWindow.getWidth() - 10);
+      var y = random.nextInt(gameWindow.getHeight() - 10);
       var robotInstance = robotFactory.createRobot(robotClass, x, y, 0);
 
       gameWindow.addRobot(new RobotRunner(robotInstance, 10));

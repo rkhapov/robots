@@ -55,6 +55,9 @@ public class GameVisualizer extends JPanel {
     }
 
     runnerToColor.put(robotRunner, new Color((int)(Math.random() * 0x1000000)));
+    
+    robotRunner.setTargetX(targetPositionX);
+    robotRunner.setTargetY(targetPositionY);
   }
 
   public void startRunners() {

@@ -63,7 +63,7 @@ public class RobotRunner extends Thread {
   @Override
   public void start() {
     System.out.println(String.format("%s %s", isAlive() ? "Resumed" : "Start", id));
-    
+
     if (paused)
       paused = false;
 
