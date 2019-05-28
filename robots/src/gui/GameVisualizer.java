@@ -96,7 +96,7 @@ public class GameVisualizer extends JPanel {
     for (var robotRunner : runnerToColor.keySet()) {
       drawRobot(g2d,
           round(robotRunner.getRobot().getPositionX()),
-          round(robotRunner.getRobot().getPositionY()),
+          round(robotRunner.getRobot().getY()),
           robotRunner.getRobot().getDirection(),
           runnerToColor.get(robotRunner));
     }

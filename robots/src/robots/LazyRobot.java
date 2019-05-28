@@ -18,7 +18,7 @@ public class LazyRobot implements Robot {
   }
 
   @Override
-  public double getPositionY() {
+  public double getY() {
     return positionY;
   }
 

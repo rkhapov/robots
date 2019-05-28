@@ -212,9 +212,12 @@ public class MainApplicationFrame extends JFrame {
     } catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException | NoClassDefFoundError e) {
       JOptionPane.showMessageDialog(
           this,
-          String.format("Не удалось загрузить программу робота: %s", e.toString()),
+          String.format("Не удалось загрузить программу робота: %s", e.toString() + e.getMessage()),
           "Ошибка загрузки робота",
           JOptionPane.ERROR_MESSAGE);
+      System.out.println(e.toString());
+      System.out.println(e.getMessage());
+      e.printStackTrace(System.out);
     }
   }
 

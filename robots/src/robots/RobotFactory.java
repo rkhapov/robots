@@ -24,8 +24,8 @@ public class RobotFactory {
       throw new NoSuchMethodException("getPositionX not found");
     }
 
-    if (!containsMethod(robotClass, "getPositionY")){
-      throw new NoSuchMethodException("getPositionY not found");
+    if (!containsMethod(robotClass, "getY")){
+      throw new NoSuchMethodException("getY not found");
     }
 
     if (!containsMethod(robotClass, "getDirection")){
@@ -92,9 +92,9 @@ public class RobotFactory {
     }
 
     @Override
-    public double getPositionY() {
+    public double getY() {
       try {
-        var method = realRobotInstance.getClass().getMethod("getPositionY");
+        var method = realRobotInstance.getClass().getMethod("getY");
 
         return (double) method.invoke(realRobotInstance);
       } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {

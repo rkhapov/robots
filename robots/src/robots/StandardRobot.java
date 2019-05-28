@@ -23,7 +23,7 @@ public class StandardRobot implements Robot {
   }
 
   @Override
-  public double getPositionY() {
+  public double getY() {
     return y;
   }
 
