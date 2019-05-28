@@ -12,7 +12,7 @@ public class ShyRobot implements Robot {
     this.x = positionX;
     this.y = positionY;
     this.direction = direction;
-    this.current = State.ToTarget;
+    this.current = State.FromTarget;
   }
 
   @Override
@@ -41,23 +41,25 @@ public class ShyRobot implements Robot {
 
       if (Math.abs(RobotsHelper.asNormalizedRadians(angleToTarget - direction)) > 1e-1) {
         direction += duration * 0.001;
+      }
+      else{
         current = State.ToTarget;
       }
     } else if (current.equals(State.InstantRotationFromTarget)) {
       direction = direction + Math.random() * Math.PI + Math.PI / 2;
       current = State.FromTarget;
     } else {
-      var ortX = diffX / length;
-      var ortY = diffY / length;
+      var ortX = Math.cos(direction);
+      var ortY = Math.sin(direction);
       var dx = ortX * velocity * duration;
       var dy = ortY * velocity * duration;
 
       x += dx;
       y += dy;
 
-      if (length <= 100) {
+      if (length <= 50 && current != State.FromTarget) {
         current = State.InstantRotationFromTarget;
-      } else if (length >= 500) {
+      } else if (length >= 500 && current != State.ToTarget) {
         current = State.RotationToTarget;
       }
     }
