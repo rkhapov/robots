@@ -75,15 +75,15 @@ public class StandardRobot implements Robot {
     double angularVelocity = 0;
     var angleFromTargetToRobot = asNormalizedRadians(angleToTarget - direction);
 
-    if (angleFromTargetToRobot > Math.PI) {
-      angularVelocity = -maxAngularVelocity;
-    } else if (angleFromTargetToRobot < Math.PI) {
+    if (angleFromTargetToRobot < Math.PI) {
       angularVelocity = maxAngularVelocity;
+    } else {
+      angularVelocity = -maxAngularVelocity;
     }
-    if (Math.abs(angleFromTargetToRobot) <= 0.1) {
+    if (Math.abs(angleFromTargetToRobot) < 0.1) {
       velocity = maxVelocity;
     } else {
-      velocity = angularVelocity * distance / 2;
+      velocity = distance * Math.abs(angularVelocity) / 2;
     }
     return applyLimits(angularVelocity, -maxAngularVelocity, maxAngularVelocity);
   }
