@@ -1,13 +1,13 @@
 package robots;
 
-public class StraightRobot implements Robot {
+public class LineRobot implements Robot {
 
   private double x;
   private double y;
   private double direction;
   private double velocity = 0.1;
 
-  public StraightRobot(double x, double y, double direction){
+  public LineRobot(double x, double y, double direction) {
     this.x = x;
     this.y = y;
     this.direction = direction;
@@ -32,9 +32,13 @@ public class StraightRobot implements Robot {
   public void move(double duration, int targetX, int targetY) {
     var diffX = targetX - x;
     var diffY = targetY - y;
-    var length = Math.sqrt(diffX*diffX + diffY*diffY);
-    var ortX = diffX/length;
-    var ortY = diffY/length;
+    var length = Math.sqrt(diffX * diffX + diffY * diffY);
+
+    if (length < 1)
+      return;
+
+    var ortX = diffX / length;
+    var ortY = diffY / length;
     var dx = ortX * velocity * duration;
     var dy = ortY * velocity * duration;
 
@@ -42,3 +46,5 @@ public class StraightRobot implements Robot {
     y += dy;
   }
 }
+
+

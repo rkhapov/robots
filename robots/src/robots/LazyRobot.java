@@ -29,6 +29,6 @@ public class LazyRobot implements Robot {
 
   @Override
   public void move(double duration, int targetX, int targetY) {
-    //do actually nothing
+    direction += duration * 0.1;
   }
 }
